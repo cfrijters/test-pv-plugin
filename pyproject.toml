@@ -115,14 +115,14 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [project.entry-points.'nomad.plugin']
-parser_entry_point = "test_pv_plugin.parsers:parser_entry_point"
-TNO_experiment_parser_entry_point = "test_pv_plugin.parsers:TNO_experiment_parser_entry_point"
+#parser_entry_point = "test_pv_plugin.parsers:parser_entry_point"
+##TNO_experiment_parser_entry_point = "test_pv_plugin.parsers:TNO_experiment_parser_entry_point"
 TNO_parser_entry_point = "test_pv_plugin.parsers:TNO_parser_entry_point"
 schema_package_entry_point = "test_pv_plugin.schema_packages:schema_package_entry_point"
 TNO_schema_package_entry_point = "test_pv_plugin.schema_packages:TNO_schema_package_entry_point"
 normalizer_entry_point = "test_pv_plugin.normalizers:normalizer_entry_point"
-app_entry_point = "test_pv_plugin.apps:app_entry_point"
-TNO_voila_app = "test_pv_plugin.apps:TNO_voila_app"
+#app_entry_point = "test_pv_plugin.apps:app_entry_point"
+#TNO_voila_app = "test_pv_plugin.apps:TNO_voila_app"
 
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues

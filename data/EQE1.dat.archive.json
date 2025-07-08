@@ -1,0 +1,9 @@
+{
+    "data": {
+        "m_def": "test_pv_plugin.schema_packages.TNO_package.TNO_EQEmeasurement_ELN",
+        "name": "EQE1 ",
+        "datetime": "2025-07-08T11:39:27.292421+00:00",
+        "description": "Notes from file name: ",
+        "data_file": "EQE1.dat"
+    }
+}

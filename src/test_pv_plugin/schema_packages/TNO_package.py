@@ -20,6 +20,7 @@ import random
 import string
 
 import numpy as np
+import pandas as pd
 from baseclasses import (
     BaseMeasurement,
     BaseProcess,
@@ -587,7 +588,7 @@ class TNO_SimpleMPPTracking(MPPTracking, EntryData):
         super().normalize(archive, logger)
 
 
-class TNO_EQEmeasurement(EQEMeasurement, EntryData):
+class TNO_EQEmeasurement_ELN(EQEMeasurement, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=[
@@ -618,16 +619,26 @@ class TNO_EQEmeasurement(EQEMeasurement, EntryData):
     )
 
     def normalize(self, archive, logger):
-        if not self.samples and self.data_file:
-            search_id = self.data_file.split('.')[0]
-            set_sample_reference(archive, self, search_id,
-                                 upload_id=archive.metadata.upload_id)
+        # if not self.samples and self.data_file:
+        #     search_id = self.data_file.split('.')[0]
+        #     set_sample_reference(archive, self, search_id,
+        #                          upload_id=archive.metadata.upload_id)
 
         if self.data_file:
             with archive.m_context.raw_file(self.data_file, 'br') as f:
                 encoding = get_encoding(f)
             with archive.m_context.raw_file(self.data_file, 'tr', encoding=encoding) as f:
-                pass  # add parsing here
+                lines = f.readlines()
+
+            header = lines[:27]
+            data = [line.split('\t') for line in lines[29:-2]]
+
+            df = pd.DataFrame(data, columns=["Wavelength", "SR", "EQE", "Photocurrent"])
+
+            df[["Wavelength"]]
+
+            print(df[["Wavelength"]])
+            
 
             eqe_data = []
 
@@ -763,7 +774,7 @@ class TNO_Deposition(LayerDeposition, EntryData):
     )
 
 
-class TNO_Measurement(BaseMeasurement, EntryData):
+class TNO_Measurement_ELN(BaseMeasurement, EntryData):
     m_def = Section(
         a_eln=dict(
             hide=[

@@ -27,6 +27,7 @@ from baseclasses.helper.utilities import (
     set_sample_reference,
 )
 from nomad.datamodel import EntryArchive
+from nomad.datamodel.context import ServerContext
 from nomad.datamodel.data import (
     EntryData,
 )
@@ -39,9 +40,9 @@ from nomad.metainfo import (
 from nomad.parsing import MatchingParser
 
 from test_pv_plugin.schema_packages.TNO_package import (
-    TNO_EQEmeasurement,
+    TNO_EQEmeasurement_ELN,
     TNO_JVmeasurement,
-    TNO_Measurement,
+    TNO_Measurement_ELN,
     TNO_SimpleMPPTracking,
 )
 
@@ -62,19 +63,14 @@ class TNOParser(MatchingParser):
         notes = ''
         if len(mainfile_split) > 2:
             notes = '.'.join(mainfile_split[1:-2])
-        measurment_type = mainfile_split[-2].lower()
-        entry = TNO_Measurement()
 
-        if measurment_type == 'jv':
-            entry = TNO_JVmeasurement()
-        if measurment_type == 'eqe':
-            entry = TNO_EQEmeasurement()
-        if measurment_type == 'mppt':
-            entry = TNO_SimpleMPPTracking()
+        entry = TNO_EQEmeasurement_ELN()
+
         archive.metadata.entry_name = os.path.basename(mainfile)
 
         search_id = mainfile_split[0]
-        set_sample_reference(archive, entry, search_id)
+        if isinstance(archive.m_context, ServerContext):
+            set_sample_reference(archive, entry, search_id)
 
         entry.name = f'{search_id} {notes}'
         entry.description = f'Notes from file name: {notes}'
